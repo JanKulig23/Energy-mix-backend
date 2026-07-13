@@ -14,7 +14,7 @@ import {
 vi.mock("../../src/clients/carbonIntensity.client");
 const mockedFetchGenerationMix = vi.mocked(apiClient.fetchGenerationMix);
 
-// ── Shared fixture ────────────────────────────────────────────────
+// Shared fixture
 
 function getThreeDayMockData() {
   const now = new Date();
@@ -34,9 +34,7 @@ describe("Energy API Routes", () => {
     vi.resetAllMocks();
   });
 
-  // ────────────────────────────────────────────────────────────────
   // GET /api/energy-mix
-  // ────────────────────────────────────────────────────────────────
 
   describe("GET /api/energy-mix", () => {
     it("should return 200 with daily energy mix data", async () => {
@@ -89,9 +87,7 @@ describe("Energy API Routes", () => {
     });
   });
 
-  // ────────────────────────────────────────────────────────────────
   // GET /api/optimal-charging
-  // ────────────────────────────────────────────────────────────────
 
   describe("GET /api/optimal-charging", () => {
     it("should return 200 with optimal charging window", async () => {
@@ -186,9 +182,7 @@ describe("Energy API Routes", () => {
     });
   });
 
-  // ────────────────────────────────────────────────────────────────
   // Health check
-  // ────────────────────────────────────────────────────────────────
 
   describe("GET /health", () => {
     it("should return 200 with status ok", async () => {

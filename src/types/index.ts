@@ -13,7 +13,7 @@ export type FuelType =
   | "wind";
 
 /** A single fuel entry within a generation mix interval. */
-export interface GenerationMixEntry {
+interface GenerationMixEntry {
   fuel: FuelType;
   perc: number;
 }

@@ -1,4 +1,4 @@
-// Energy controller — translates HTTP requests into service calls
+// Energy controller - translates HTTP requests into service calls
 // and formats responses.
 
 import { Request, Response, NextFunction } from "express";

@@ -16,7 +16,7 @@ import {
 vi.mock("../../src/clients/carbonIntensity.client");
 const mockedFetchGenerationMix = vi.mocked(apiClient.fetchGenerationMix);
 
-// ── Shared test fixtures ──────────────────────────────────────────
+// Shared test fixtures
 
 /** Returns today's date and the next two days as YYYY-MM-DD (UTC). */
 function getExpectedDates(): [string, string, string] {
@@ -32,9 +32,7 @@ describe("EnergyService", () => {
     vi.resetAllMocks();
   });
 
-  // ────────────────────────────────────────────────────────────────
   // getEnergyMix
-  // ────────────────────────────────────────────────────────────────
 
   describe("getEnergyMix", () => {
     it("should return daily averages for three days", async () => {
@@ -134,9 +132,7 @@ describe("EnergyService", () => {
     });
   });
 
-  // ────────────────────────────────────────────────────────────────
   // getOptimalChargingWindow
-  // ────────────────────────────────────────────────────────────────
 
   describe("getOptimalChargingWindow", () => {
     it("should find the window with the highest clean energy percentage", async () => {

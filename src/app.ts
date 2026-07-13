@@ -13,7 +13,7 @@ import { logger } from "./utils/logger";
 
 const app = express();
 
-// ── Security & parsing ─────────────────────────────────────────
+// Security and parsing
 app.use(helmet());
 app.use(
   cors({
@@ -23,13 +23,13 @@ app.use(
 );
 app.use(express.json());
 
-// ── Request logging ────────────────────────────────────────────
+// Request logging
 app.use((req, _res, next) => {
   logger.info({ method: req.method, url: req.url }, "Incoming request");
   next();
 });
 
-// ── Swagger / OpenAPI docs ─────────────────────────────────────
+// Swagger / OpenAPI docs
 const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: "3.0.0",
@@ -52,15 +52,15 @@ const swaggerSpec = swaggerJsdoc({
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// ── Health check ───────────────────────────────────────────────
+// Health check
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ── API routes ─────────────────────────────────────────────────
+// API routes 
 app.use("/api", energyRoutes);
 
-// ── Global error handler (must be last) ────────────────────────
+// Global error handler (must be last)
 app.use(errorHandler);
 
 export default app;

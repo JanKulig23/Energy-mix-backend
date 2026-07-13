@@ -1,4 +1,4 @@
-// Energy service — contains all business logic.
+// Energy service - contains all business logic.
 //
 // • getEnergyMix():  Aggregates 30-min intervals into daily averages
 //                    and computes the clean-energy percentage.
@@ -23,9 +23,7 @@ import type {
   OptimalChargingWindow,
 } from "../types";
 
-// ──────────────────────────────────────────────────────────────────
 // Public API
-// ──────────────────────────────────────────────────────────────────
 
 /**
  * Retrieves the energy mix for three days (today, tomorrow, day after tomorrow).
@@ -97,9 +95,7 @@ export async function getOptimalChargingWindow(
   return result;
 }
 
-// ──────────────────────────────────────────────────────────────────
 // Internal helpers
-// ──────────────────────────────────────────────────────────────────
 
 /**
  * Groups intervals by their UTC date (derived from the `from` field).
