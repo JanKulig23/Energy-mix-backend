@@ -19,16 +19,16 @@ export const config = {
   apiTimeoutMs: parseInt(process.env.API_TIMEOUT_MS || "10000", 10),
 
   /** Minimum number of hours for a charging window */
-  chargingHoursMin: 1,
+  chargingHoursMin: parseInt(process.env.CHARGING_HOURS_MIN || "1", 10),
 
   /** Maximum number of hours for a charging window */
-  chargingHoursMax: 6,
+  chargingHoursMax: parseInt(process.env.CHARGING_HOURS_MAX || "6", 10),
 
   /** Number of days to display in the energy mix overview (today + N-1) */
-  energyMixDays: 3,
+  energyMixDays: parseInt(process.env.ENERGY_MIX_DAYS || "3", 10),
 
   /** Number of forecast days for the charging optimizer */
-  forecastDays: 2,
+  forecastDays: parseInt(process.env.FORECAST_DAYS || "2", 10),
 } as const;
 
 /**
