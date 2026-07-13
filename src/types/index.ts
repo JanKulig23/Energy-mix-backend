@@ -1,5 +1,3 @@
-// TypeScript types & interfaces shared across the backend.
-
 /** Fuel types returned by the Carbon Intensity API. */
 export type FuelType =
   | "biomass"

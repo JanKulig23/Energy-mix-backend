@@ -1,6 +1,3 @@
-// Date utility helpers for working with UTC date ranges.
-// All dates are handled in UTC to match the Carbon Intensity API.
-
 /**
  * Returns the start of the given date in UTC (00:00:00.000Z).
  */

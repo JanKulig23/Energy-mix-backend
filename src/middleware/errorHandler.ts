@@ -1,6 +1,3 @@
-// Global error-handling middleware.
-// Catches all unhandled errors and returns a consistent JSON response.
-
 import { Request, Response, NextFunction } from "express";
 import { CarbonIntensityApiError } from "../clients/carbonIntensity.client";
 import { InsufficientDataError } from "../services/energy.service";

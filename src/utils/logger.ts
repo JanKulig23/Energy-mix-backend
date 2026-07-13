@@ -1,6 +1,3 @@
-// Structured logger using pino.
-// In production, outputs JSON; in development, uses pino-pretty.
-
 import pino from "pino";
 import { config } from "../config";
 

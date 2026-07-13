@@ -1,6 +1,3 @@
-// Application configuration — loaded from environment variables
-// with sensible defaults for local development.
-
 export const config = {
   /** Server port */
   port: parseInt(process.env.PORT || "3001", 10),

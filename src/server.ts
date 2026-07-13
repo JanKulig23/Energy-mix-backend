@@ -1,5 +1,3 @@
-// Server entry point - starts the Express application.
-
 import app from "./app";
 import { config } from "./config";
 import { logger } from "./utils/logger";

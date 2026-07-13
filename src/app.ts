@@ -1,6 +1,3 @@
-// Express application setup.
-// Configures middleware, routes, Swagger docs, and error handling.
-
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";

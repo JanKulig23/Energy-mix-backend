@@ -1,11 +1,3 @@
-// Energy service - contains all business logic.
-//
-// • getEnergyMix():  Aggregates 30-min intervals into daily averages
-//                    and computes the clean-energy percentage.
-// • getOptimalChargingWindow(): Sliding-window search over forecast
-//                               data to find the window with the
-//                               highest clean-energy share.
-
 import { fetchGenerationMix } from "../clients/carbonIntensity.client";
 import { CLEAN_ENERGY_SOURCES, ALL_FUEL_TYPES } from "../config";
 import {

@@ -1,5 +1,3 @@
-// Route definitions for energy-related endpoints.
-
 import { Router } from "express";
 import { z } from "zod";
 import * as energyController from "../controllers/energy.controller";

@@ -1,7 +1,3 @@
-// Carbon Intensity API client.
-// Handles all communication with the external API, including
-// timeouts and error wrapping.
-
 import axios, { AxiosError } from "axios";
 import { config } from "../config";
 import { logger } from "../utils/logger";

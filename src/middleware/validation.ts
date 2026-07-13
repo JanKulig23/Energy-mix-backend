@@ -1,7 +1,3 @@
-// Zod-based validation middleware.
-// Provides a generic factory that validates query parameters
-// against a given Zod schema.
-
 import { Request, Response, NextFunction } from "express";
 import { ZodSchema, ZodError } from "zod";
 import type { ApiErrorResponse } from "../types";

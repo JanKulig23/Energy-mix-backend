@@ -1,6 +1,3 @@
-// Energy controller - translates HTTP requests into service calls
-// and formats responses.
-
 import { Request, Response, NextFunction } from "express";
 import * as energyService from "../services/energy.service";
 import type { EnergyMixResponse, OptimalChargingResponse } from "../types";
