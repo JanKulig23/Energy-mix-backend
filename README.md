@@ -1,5 +1,10 @@
 # UK Energy Mix & EV Charging Optimizer — Backend
 
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+
 REST API that provides UK energy generation mix data and calculates optimal EV charging windows based on clean energy availability.
 
 > **Frontend Repository:** [Energy-mix-frontend](https://github.com/JanKulig23/Energy-mix-frontend)
