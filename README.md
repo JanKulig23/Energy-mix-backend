@@ -2,15 +2,19 @@
 
 REST API that provides UK energy generation mix data and calculates optimal EV charging windows based on clean energy availability.
 
+> **Frontend Repository:** [Energy-mix-frontend](https://github.com/JanKulig23/Energy-mix-frontend)
+
 ## Tech Stack
 
 - **Runtime**: Node.js 20+
 - **Framework**: Express.js
 - **Language**: TypeScript
 - **Validation**: Zod
+- **Security & Rate Limiting**: Helmet, express-rate-limit
+- **Caching**: node-cache
 - **Logging**: Pino
 - **API Docs**: Swagger / OpenAPI
-- **Testing**: Jest + Supertest
+- **Testing**: Vitest + Supertest
 
 ## Getting Started
 
@@ -56,14 +60,20 @@ Swagger UI is available at `http://localhost:3001/api-docs`.
 
 ### `GET /api/energy-mix`
 
-Returns the average energy generation mix for three days (today, tomorrow, day after tomorrow).
+Returns the average energy generation mix for a given timeframe (defaults to three days: today, tomorrow, day after tomorrow).
+
+**Optional Query Parameters:**
+- `from` (ISO datetime): Start date
+- `to` (ISO datetime): End date
 
 ### `GET /api/optimal-charging?hours=N`
 
-Finds the optimal EV charging window (1–6 hours) with the highest clean energy percentage across the next two forecast days.
+Finds the optimal EV charging window (1–6 hours) with the highest clean energy percentage.
 
 **Query Parameters:**
 - `hours` (required): Integer 1–6
+- `from` (optional): Start date (ISO datetime)
+- `to` (optional): End date (ISO datetime)
 
 ### `GET /health`
 
