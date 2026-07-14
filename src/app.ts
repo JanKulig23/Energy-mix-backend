@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import rateLimit from "express-rate-limit";
 import { config } from "./config";
 import energyRoutes from "./routes/energy.routes";
 import { errorHandler } from "./middleware/errorHandler";
@@ -19,6 +20,15 @@ app.use(
   }),
 );
 app.use(express.json());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+app.use(limiter);
 
 // Request logging
 app.use((req, _res, next) => {

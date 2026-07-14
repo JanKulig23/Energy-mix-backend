@@ -6,6 +6,18 @@ import { config } from "../config";
 
 const router = Router();
 
+const dateQuerySchema = z.coerce.date().optional();
+
+const energyMixQuerySchema = z.object({
+  from: dateQuerySchema,
+  to: dateQuerySchema,
+}).refine(data => {
+  if (data.from && data.to) {
+    return data.from <= data.to;
+  }
+  return true;
+}, { message: "'from' date must be before or equal to 'to' date", path: ["from"] });
+
 // Validation schema for the optimal-charging query params
 const optimalChargingQuerySchema = z.object({
   hours: z.coerce
@@ -16,7 +28,14 @@ const optimalChargingQuerySchema = z.object({
     .int("Hours must be a whole number")
     .min(config.chargingHoursMin, `Hours must be at least ${config.chargingHoursMin}`)
     .max(config.chargingHoursMax, `Hours must be at most ${config.chargingHoursMax}`),
-});
+  from: dateQuerySchema,
+  to: dateQuerySchema,
+}).refine(data => {
+  if (data.from && data.to) {
+    return data.from <= data.to;
+  }
+  return true;
+}, { message: "'from' date must be before or equal to 'to' date", path: ["from"] });
 
 /**
  * @openapi
@@ -36,7 +55,11 @@ const optimalChargingQuerySchema = z.object({
  *       502:
  *         description: Failed to fetch data from the external API
  */
-router.get("/energy-mix", energyController.getEnergyMix);
+router.get(
+  "/energy-mix",
+  validateQuery(energyMixQuerySchema),
+  energyController.getEnergyMix,
+);
 
 /**
  * @openapi
@@ -58,6 +81,20 @@ router.get("/energy-mix", energyController.getEnergyMix);
  *           minimum: 1
  *           maximum: 6
  *         description: Length of the charging window in full hours (1–6)
+ *       - in: query
+ *         name: from
+ *         required: false
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Start date for the window
+ *       - in: query
+ *         name: to
+ *         required: false
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: End date for the window
  *     responses:
  *       200:
  *         description: Successful response with optimal charging window

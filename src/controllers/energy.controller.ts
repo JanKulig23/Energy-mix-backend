@@ -9,12 +9,14 @@ import type { EnergyMixResponse, OptimalChargingResponse } from "../types";
  * (today, tomorrow, day after tomorrow).
  */
 export async function getEnergyMix(
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const data = await energyService.getEnergyMix();
+    const from = req.query.from as Date | undefined;
+    const to = req.query.to as Date | undefined;
+    const data = await energyService.getEnergyMix(from, to);
     const response: EnergyMixResponse = { data };
     res.json(response);
   } catch (error) {
@@ -35,7 +37,9 @@ export async function getOptimalChargingWindow(
 ): Promise<void> {
   try {
     const hours = Number(req.query.hours);
-    const data = await energyService.getOptimalChargingWindow(hours);
+    const from = req.query.from as Date | undefined;
+    const to = req.query.to as Date | undefined;
+    const data = await energyService.getOptimalChargingWindow(hours, from, to);
     const response: OptimalChargingResponse = { data };
     res.json(response);
   } catch (error) {

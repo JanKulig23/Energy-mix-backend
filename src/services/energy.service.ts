@@ -6,6 +6,8 @@ import {
   toApiDateString,
   extractDateUTC,
   addDaysUTC,
+  startOfDayUTC,
+  endOfDayUTC,
 } from "../utils/dateUtils";
 import { logger } from "../utils/logger";
 import type {
@@ -18,16 +20,21 @@ import type {
 // Public API
 
 /**
- * Retrieves the energy mix for three days (today, tomorrow, day after tomorrow).
+ * Retrieves the energy mix for the given date range (defaulting to three days).
  *
  * Steps:
- *  1. Build the 3-day UTC date range.
+ *  1. Build the UTC date range.
  *  2. Fetch all 30-min intervals from the external API.
  *  3. Group intervals by date.
  *  4. Average each fuel type and compute the clean-energy percentage.
  */
-export async function getEnergyMix(): Promise<DailyEnergyMix[]> {
-  const { from, to } = getThreeDayRange();
+export async function getEnergyMix(
+  fromDate?: Date,
+  toDate?: Date,
+): Promise<DailyEnergyMix[]> {
+  const defaultRange = getThreeDayRange();
+  const from = fromDate ? startOfDayUTC(fromDate) : defaultRange.from;
+  const to = toDate ? endOfDayUTC(toDate) : defaultRange.to;
   const intervals = await fetchGenerationMix(
     toApiDateString(from),
     toApiDateString(to),
@@ -37,12 +44,13 @@ export async function getEnergyMix(): Promise<DailyEnergyMix[]> {
   const dailyMixes = computeDailyAverages(grouped);
 
   // The API may return intervals from adjacent days due to half-hour
-  // boundary rounding. Filter to exactly the 3 expected dates.
-  const expectedDates = new Set([
-    extractDateUTC(from.toISOString()),
-    extractDateUTC(addDaysUTC(from, 1).toISOString()),
-    extractDateUTC(addDaysUTC(from, 2).toISOString()),
-  ]);
+  // boundary rounding. Filter to exactly the expected dates.
+  const expectedDates = new Set<string>();
+  let current = new Date(from);
+  while (current <= to) {
+    expectedDates.add(extractDateUTC(current.toISOString()));
+    current = addDaysUTC(current, 1);
+  }
   const filtered = dailyMixes.filter((d) => expectedDates.has(d.date));
 
   logger.info({ days: filtered.length }, "Computed daily energy mix averages");
@@ -55,12 +63,18 @@ export async function getEnergyMix(): Promise<DailyEnergyMix[]> {
  * two forecast days.
  *
  * @param hours - Window length in full hours (1–6).
+ * @param fromDate - Optional start date for the forecast window.
+ * @param toDate - Optional end date for the forecast window.
  */
 export async function getOptimalChargingWindow(
   hours: number,
+  fromDate?: Date,
+  toDate?: Date,
 ): Promise<OptimalChargingWindow> {
   const intervalsNeeded = hours * 2; // 30-min intervals per hour
-  const { from, to } = getTwoDayForecastRange();
+  const defaultRange = getTwoDayForecastRange();
+  const from = fromDate ? startOfDayUTC(fromDate) : defaultRange.from;
+  const to = toDate ? endOfDayUTC(toDate) : defaultRange.to;
 
   const intervals = await fetchGenerationMix(
     toApiDateString(from),

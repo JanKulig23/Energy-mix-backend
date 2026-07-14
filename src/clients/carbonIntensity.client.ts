@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import NodeCache from "node-cache";
 import { config } from "../config";
 import { logger } from "../utils/logger";
 import type { CarbonIntensityApiResponse, IntervalData } from "../types";
@@ -11,8 +12,17 @@ import type { CarbonIntensityApiResponse, IntervalData } from "../types";
  * @param to   - End datetime (ISO string)
  * @returns Array of 30-minute interval data
  */
+const cache = new NodeCache({ stdTTL: 5 * 60 }); // 5 minutes cache
+
 export async function fetchGenerationMix(from: string, to: string): Promise<IntervalData[]> {
   const url = `${config.carbonIntensityApiUrl}/generation/${from}/${to}`;
+  const cacheKey = `generationMix_${from}_${to}`;
+
+  const cachedData = cache.get<IntervalData[]>(cacheKey);
+  if (cachedData) {
+    logger.info({ cacheKey }, "Returning generation mix from cache");
+    return cachedData;
+  }
 
   logger.info({ url }, "Fetching generation mix from Carbon Intensity API");
 
@@ -24,6 +34,10 @@ export async function fetchGenerationMix(from: string, to: string): Promise<Inte
 
     const intervals = response.data?.data ?? [];
     logger.info({ intervalCount: intervals.length }, "Successfully fetched generation mix data");
+
+    if (intervals.length > 0) {
+      cache.set(cacheKey, intervals);
+    }
 
     return intervals;
   } catch (error) {
